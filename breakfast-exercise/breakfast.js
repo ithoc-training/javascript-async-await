@@ -114,45 +114,44 @@ function prepareTheTable(duration) {
     });
 }
 
+// Prepare the toast asynchronously.
+async function prepareToast() {
+
+    let toastedBread = await toastBread(4000);
+    console.log(toastedBread);
+
+    let butterToast = await putButterOnBread(1000);
+    console.log(butterToast);
+
+    let jamToast = await putJamOnToast(1000);
+    console.log(jamToast);
+
+}
+
+// Make coffee asynchronously.
+async function makeCoffee() {
+
+    let boiledWater = await boilWater(4500);
+    console.log(boiledWater);
+
+    let brewedCoffee = await brewCoffee(3500);
+    console.log(brewedCoffee);
+}
+
 // Preparing breakfast
 // This function simulates preparing breakfast. It calls the functions defined above to prepare the
 // different components of breakfast. It returns a Promise that resolves if all the components are
 // prepared successfully, and rejects if any of the components fail.
-function prepareBreakfast() {
+async function prepareBreakfast() {
 
-    let toastPromise = toastBread(3000)
-        .then(message => {
-            console.log(message);
-            return putButterOnBread(1000);
-        })
-        .then(message => {
-            console.log(message);
-            return putJamOnToast(1000);
-        })
-        .then(message => {
-            console.log(message);
-        });
-
-    let coffeePromise = boilWater(4500)
-        .then(message => {
-            console.log(message);
-            return brewCoffee(3500);
-        })
-        .then(message => {
-            console.log(message);
-        })
-
-    Promise.all([toastPromise, coffeePromise])
-        .then(message => {
-            console.log(message);
-            return prepareTheTable(5000)
-        })
-        .then(message => {
-            console.log(message);
-            console.log('Breakfast is ready!');
-        })
-        .catch(error => console.error(error.message))
-
+    try {
+        await Promise.all([prepareToast(), makeCoffee()]);
+        await prepareTheTable(5000);
+        console.log("Breakfast is ready!");
+    } catch(error) {
+        console.error(error.message);
+    }
 }
 
+// noinspection JSIgnoredPromiseFromCall
 prepareBreakfast();
